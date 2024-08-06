@@ -1,0 +1,42 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+class Program
+{
+    static async Task Main(string[] args)
+    {
+        try
+        {
+            List<int> numbers = await GenerateList();
+            List<int> evenNumbers = await FilterList(numbers);
+
+            Console.WriteLine("Even numbers:");
+            foreach (int number in evenNumbers)
+            {
+                Console.WriteLine(number);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An exception occurred: {ex.Message}");
+        }
+    }
+
+    static async Task<List<int>> GenerateList()
+    {
+        await Task.Delay(1000);
+        List<int> numbers = Enumerable.Range(1, 100).ToList();
+        return numbers;
+    }
+
+    static Task<List<int>> FilterList(List<int> numbers)
+    {
+        return Task.Run(() =>
+        {
+            List<int> evenNumbers = numbers.Where(n => n % 2 == 0).ToList();
+            return evenNumbers;
+        });
+    }
+}
